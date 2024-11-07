@@ -5,7 +5,7 @@ import Luchador from './Luchador.js';
 class Namekian extends Luchador {
     constructor(nombre, velocidad, ataque, defensa, salud) {
         super(nombre, velocidad, ataque, defensa, salud); 
-        this.regenerado = false; // Indica si ha usado la regeneración
+        this.regenerado = false;
 
         if (typeof velocidad !== 'number' || velocidad < 0) {
             throw new Error('La velocidad base debe ser mayor que 0.');
@@ -26,8 +26,8 @@ class Namekian extends Luchador {
      */
     regenerarSalud() {
         if (!this.regenerado && this.salud < 50) {
-            this.salud += 30; // Regenera 30 puntos de salud
-            this.regenerado = true;  // Marca como regenerado
+            this.salud += 30;
+            this.regenerado = true;
             console.log(`${this.nombre} ha regenerado su salud! Salud actual: ${this.salud}`);
         } else if (this.salud >= 50) {
             console.log(`${this.nombre} no necesita regenerar salud, ya tiene más de 50 puntos.`);

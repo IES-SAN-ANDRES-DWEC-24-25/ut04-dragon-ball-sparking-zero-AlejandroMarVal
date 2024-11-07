@@ -1,7 +1,7 @@
 // src/Torneo.js
 
-import SimularBatalla from './SimularBatalla.js'; // Importación de la clase SimularBatalla
-import { esPotenciaDeDos, mezclarArray } from './utils.js'; // Importación de las funciones necesarias desde utils.js
+import SimularBatalla from './simularBatalla.js'; 
+import { esPotenciaDeDos, mezclarArray } from './utils.js'; 
 
 /**
  * Clase Torneo para gestionar la simulación del torneo de luchadores.
@@ -10,7 +10,7 @@ class Torneo {
 
   /**
    * Crea una instancia de Torneo.
-   * @param {Luchador[]} luchadores - Array de luchadores participantes.
+   * @param {Luchador[]} luchadores 
    */
   constructor(luchadores) {
     // Verificar que el número de luchadores sea una potencia de 2
