@@ -6,7 +6,8 @@ import Earthling from './Earthling.js';
 
 class SimularBatalla {
   simularBatalla(luchador1, luchador2) {
-    console.log(`\n=== Nuevo combate entre ${luchador1.nombre} y ${luchador2.nombre} ===`);
+    const mensajes = [];
+    mensajes.push(`=== Nuevo combate entre ${luchador1.nombre} y ${luchador2.nombre} ===`);
 
     let atacante, defensor;
     if (luchador1.velocidad > luchador2.velocidad) {
@@ -19,7 +20,7 @@ class SimularBatalla {
       [atacante, defensor] = Math.random() < 0.5 ? [luchador1, luchador2] : [luchador2, luchador1];
     }
 
-    console.log(`${atacante.nombre} tiene mayor velocidad y ataca primero.`);
+    mensajes.push(`${atacante.nombre} tiene mayor velocidad y ataca primero.`);
 
     atacante.rondaHabilidadEspecial = Math.floor(Math.random() * 4) + 2;
     defensor.rondaHabilidadEspecial = Math.floor(Math.random() * 4) + 2;
@@ -29,24 +30,24 @@ class SimularBatalla {
     let rondaActual = 1;
 
     while (luchador1.estaVivo() && luchador2.estaVivo()) {
-      console.log(`\n--- Turno de la ronda ${rondaActual} ---`);
+      mensajes.push(`--- Turno de la ronda ${rondaActual} ---`);
 
       if (luchador1 instanceof Namekian && luchador1.salud < 50 && !luchador1.habilidadUsada) {
         luchador1.regenerarSalud();
-        console.log(`${luchador1.nombre} ha regenerado salud! Salud actual: ${luchador1.salud.toFixed(2)}`);
+        mensajes.push(`${luchador1.nombre} ha regenerado salud! Salud actual: ${luchador1.salud.toFixed(2)}`);
         luchador1.habilidadUsada = true;
       }
       if (luchador2 instanceof Namekian && luchador2.salud < 50 && !luchador2.habilidadUsada) {
         luchador2.regenerarSalud();
-        console.log(`${luchador2.nombre} ha regenerado salud! Salud actual: ${luchador2.salud.toFixed(2)}`);
-        luchador2.habilidadUsada = true;  
+        mensajes.push(`${luchador2.nombre} ha regenerado salud! Salud actual: ${luchador2.salud.toFixed(2)}`);
+        luchador2.habilidadUsada = true;
       }
 
       if (rondaActual === atacante.rondaHabilidadEspecial && !atacante.habilidadUsada) {
-        this.activarHabilidadEspecial(atacante);
+        this.activarHabilidadEspecial(atacante, mensajes);
       }
       if (rondaActual === defensor.rondaHabilidadEspecial && !defensor.habilidadUsada) {
-        this.activarHabilidadEspecial(defensor);
+        this.activarHabilidadEspecial(defensor, mensajes);
       }
 
       const esquivar = Math.random() < 0.2;
@@ -54,10 +55,10 @@ class SimularBatalla {
       danio = defensor.defensa > danio ? danio * 0.9 : danio;
 
       if (esquivar) {
-        console.log(`${defensor.nombre} esquiva el ataque de ${atacante.nombre}!`);
+        mensajes.push(`${defensor.nombre} esquiva el ataque de ${atacante.nombre}!`);
       } else {
         defensor.recibirDanio(danio);
-        console.log(`${atacante.nombre} ataca a ${defensor.nombre} infligiendo ${danio.toFixed(2)} de daño. Salud restante de ${defensor.nombre}: ${defensor.salud.toFixed(2)}`);
+        mensajes.push(`${atacante.nombre} ataca a ${defensor.nombre} infligiendo ${danio.toFixed(2)} de daño. Salud restante de ${defensor.nombre}: ${defensor.salud.toFixed(2)}`);
       }
 
       [atacante, defensor] = [defensor, atacante];
@@ -65,32 +66,32 @@ class SimularBatalla {
     }
 
     const ganador = luchador1.estaVivo() ? luchador1 : luchador2;
-    console.log(`El ganador de este combate es ${ganador.nombre}!\n`);
+    mensajes.push(`El ganador de este combate es ${ganador.nombre}!`);
 
     luchador1.resetear();
     luchador2.resetear();
 
-    return ganador;
+    return { ganador, mensajes };
   }
 
-  activarHabilidadEspecial(luchador) {
-    if (luchador.habilidadUsada) return; 
-    
-    console.log(`\n${luchador.nombre} activa su habilidad especial en la ronda ${luchador.rondaHabilidadEspecial}!`);
-    
+  activarHabilidadEspecial(luchador, mensajes) {
+    if (luchador.habilidadUsada) return;
+
+    mensajes.push(`${luchador.nombre} activa su habilidad especial en la ronda ${luchador.rondaHabilidadEspecial}!`);
+
     if (luchador instanceof Saiyan) {
       luchador.transformar();
-      console.log(`${luchador.nombre} se transforma en Super Saiyan! Aumenta su poder.`);
+      mensajes.push(`${luchador.nombre} se transforma en Super Saiyan! Aumenta su poder.`);
     } else if (luchador instanceof Namekian) {
       if (luchador.salud < 50) {
         luchador.regenerarSalud();
-        console.log(`${luchador.nombre} regenera salud!`);
+        mensajes.push(`${luchador.nombre} regenera salud!`);
       }
     } else if (luchador instanceof Earthling) {
       luchador.usarTecnicaEspecial();
-      console.log(`${luchador.nombre} usa su técnica especial!`);
+      mensajes.push(`${luchador.nombre} usa su técnica especial!`);
     }
-    
+
     luchador.habilidadUsada = true;
   }
 }

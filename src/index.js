@@ -17,6 +17,7 @@ const luchadores = [
     new Earthling('Tenshinhan', 80, 44, 28, 350)
 ];
 
+// Mostrar la lista de luchadores en la sección correspondiente
 const listaLuchadores = document.getElementById('lista-luchadores');
 luchadores.forEach(luchador => {
     const div = document.createElement('div');
@@ -27,5 +28,13 @@ luchadores.forEach(luchador => {
 // Iniciar torneo
 document.getElementById('iniciar-torneo').addEventListener('click', () => {
     const torneo = new Torneo(luchadores);
-    torneo.iniciar(); 
-});
+    const mensajes = torneo.iniciar();
+  
+    const resultadoTorneo = document.getElementById('resultado-torneo');
+    resultadoTorneo.innerHTML = '';
+    mensajes.forEach(mensaje => {
+      const p = document.createElement('p');
+      p.textContent = mensaje;
+      resultadoTorneo.appendChild(p);
+    });
+  });
